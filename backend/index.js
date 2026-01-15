@@ -76,7 +76,7 @@ app.post("/login", async (req, res) => {
 
 app.post("/signup", async (req, res) => {
     // ^ getting frontend data
-    const { email, password, name } = req.body;`` // ? already deserialized JSON
+    const { email, password, name } = req.body; `` // ? already deserialized JSON
 
     // ^ checking if email and password is not null
     if (!email || !password || !name) {
@@ -190,18 +190,27 @@ app.get("/task/:id", verifyJWTToken, async (req, res) => {
 });
 
 
-app.put("/update-task", verifyJWTToken, async (req, resp) => {
+
+app.put("/update-task/:id", verifyJWTToken, async (req, resp) => {
     const db = await connection();
     const collection = await db.collection(collectionName);
-    const { _id, ...fields } = req.body;
-    const update = { $set: fields };
-    const result = await collection.updateOne({ _id: new ObjectId(_id) }, update);
-    if (result) {
-        resp.send({ message: "task data updated", success: true, result });
-    } else {
-        resp.send({ message: "error try after sometime", success: false });
+
+    const { id } = req.params;
+
+    const { title, description } = req.body; // whitelist
+
+    const result = await collection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { title, description } }
+    );
+
+    if (result.matchedCount === 0) {
+        return resp.status(404).send({ success: false, message: "Task not found" });
     }
+
+    resp.send({ success: true, message: "Task updated" });
 });
+
 
 app.delete("/delete/:id", verifyJWTToken, async (req, resp) => {
     const db = await connection();

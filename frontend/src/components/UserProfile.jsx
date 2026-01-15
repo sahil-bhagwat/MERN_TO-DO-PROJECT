@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../style/userProfile.css";
 
-const UserProfile = ({ compact = false }) => {
+const UserProfile = ({ compact = true }) => {
     const storedUser = localStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -37,6 +37,16 @@ const UserProfile = ({ compact = false }) => {
         setPassword("");
         setMessage("Profile updated successfully");
     };
+    if (compact) {
+        return (
+            <div className="user-mini-profile">
+                <div className="user-name">{user?.name}</div>
+                <br />
+                <div className="user-email">{user?.email}</div>
+            </div>
+        );
+    }
+
 
     return (
         <div className={compact ? "user-mini-profile" : "container"}>

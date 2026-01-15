@@ -5,21 +5,23 @@ import UserProfile from "./UserProfile";
 
 function NavBar() {
     const [login, setLogin] = useState(localStorage.getItem("login"));
-
+    const [showProfile, setShowProfile] = useState(false);
 
     const logout = () => {
-        localStorage.clear();
-        setLogin(null);
+        localStorage.removeItem("login");
+        localStorage.removeItem("user");
+        window.dispatchEvent(new Event("authChanged"));
         window.location.replace("/login");
     };
 
     useEffect(() => {
-        const handleStorage = () => {
+        const updateAuth = () => {
             setLogin(localStorage.getItem("login"));
         };
 
-        window.addEventListener("storage", handleStorage);
-        return () => window.removeEventListener("storage", handleStorage);
+        window.addEventListener("authChanged", updateAuth);
+
+        return () => window.removeEventListener("authChanged", updateAuth);
     }, []);
 
     return (
@@ -29,16 +31,34 @@ function NavBar() {
             {login && (
                 <div className="nav-right">
                     <ul className="nav-links">
-                        <li><Link to="/">List</Link></li>
-                        <li><Link to="/add">Add Task</Link></li>
-                        <li><Link onClick={logout}>Logout</Link></li>
                         <li>
-                            <UserProfile compact />
+                            <Link to="/">List</Link>
                         </li>
+                        <li>
+                            <Link to="/add">Add Task</Link>
+                        </li>
+                        <li>
+                            <Link onClick={logout}>Logout</Link>
+                        </li>
+                   
                     </ul>
 
                     {/* User Profile shown on navbar */}
-                    {/* <UserProfile compact /> */}
+                    <div
+                        className="profile-hover-box"
+                        onMouseEnter={() => setShowProfile(true)}
+                        onMouseLeave={() => setShowProfile(false)}
+                    >
+                        <UserProfile compact />
+
+                        {showProfile && (
+                            <div className="profile-dropdown">
+                                <UserProfile compact={false} />
+                            </div>
+                        )}
+                    </div>
+
+
                 </div>
             )}
         </nav>
