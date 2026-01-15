@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 
-dotenv.config(); // ✅ MUST be here or in index.js
+dotenv.config(); //
 
 const dbName = "mynewdb";
 export const collectionName = "todo";
