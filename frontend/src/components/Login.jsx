@@ -12,11 +12,6 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (localStorage.getItem("token")) {
-            navigate("/");
-        }
-    }, [navigate]);
 
     const validateForm = () => {
         if (!userData.email.trim()) {
