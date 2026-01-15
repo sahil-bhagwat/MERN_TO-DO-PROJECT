@@ -1,0 +1,28 @@
+PROJECT: MERN ToDo Application
+DATE: <today’s date>
+
+==============================
+FRONTEND BUILD LOG
+==============================
+
+cd frontend
+npm install
+npm run dev
+npm run build
+
+Result:
+Vite build successful
+dist folder generated
+
+
+==============================
+BACKEND SERVER LOG
+==============================
+
+cd backend
+npm install
+npm start
+
+Result:
+Connected to MongoDB
+Server running on port 3200
