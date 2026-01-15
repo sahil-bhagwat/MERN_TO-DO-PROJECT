@@ -11,6 +11,7 @@ import dotenv from "dotenv";
 dotenv.config(); // MUST be here or in index.js
 
 const app = e();
+const port=process.env.PORT;
 
 app.use(e.json());
 app.use(
@@ -288,6 +289,6 @@ function verifyJWTToken(req, res, next) {
 }
 
 
-app.listen(3200, () => {
+app.listen(port, () => {
     console.log("Server running on port 3200");
 });
